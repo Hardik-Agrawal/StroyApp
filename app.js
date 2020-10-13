@@ -14,7 +14,6 @@ dotenv.config({ path: './config/config.env' })
 
 //Passport Config
 require("./config/passport")(passport)
-
 connectDB();
 const app = express();
 
@@ -27,8 +26,19 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+//Handlebars Helpers
+const { formatDate, stripTags, turncate } = require("./helpers/hbs")
+
 // Handelbars
-app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('.hbs', exphbs({
+    helpers: {
+        formatDate,
+        stripTags,
+        turncate,
+    },
+    defaultLayout: 'main',
+    extname: '.hbs'
+}))
 app.set('view engine', '.hbs')
 
 //Session
